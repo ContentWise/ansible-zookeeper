@@ -1,0 +1,50 @@
+---
+- name: make sure user for zookeeper exists
+  user:
+    name: "{{ zookeeper_user }}"
+
+- name: unarchive zookeeper
+  unarchive:
+    remote_src: yes
+    dest: "{{ zookeeper_install_dir | dirname }}"
+    src: "{{ zookeeper_url }}"
+    creates: "{{ zookeeper_install_dir }}/bin/zookeeper"
+    owner: "{{ zookeeper_user }}"
+    group: "{{ zookeeper_group }}"
+
+- name: ensure required directories exist
+  file:
+    state: directory
+    owner: "{{ zookeeper_user }}"
+    group: "{{ zookeeper_group }}"
+    path: "{{ item }}"
+  with_items:
+    - "{{ zookeeper_data_dir }}"
+    - "{{ zookeeper_log_dir }}"
+    - "{{ zookeeper_conf_dir }}"
+
+- name: ensure zoo.conf is present
+  template:
+    src: zoo.cfg.j2
+    dest: "{{ zookeeper_conf_dir }}/zoo.cfg"
+    owner: "{{ zookeeper_user }}"
+    group: "{{ zookeeper_group }}"
+  
+- name: ensure myid is present
+  template:
+    src: myid.j2
+    dest: "{{ zookeeper_data_dir }}/myid"
+    owner: "{{ zookeeper_user }}"
+    group: "{{ zookeeper_group }}"
+  when: zookeeper_hosts is defined
+
+- name: create systemd script
+  template:
+    src: zookeeper.service.j2
+    dest: /etc/systemd/system/zookeeper.service
+
+- name: make sure zookeeper is started
+  service:
+    name: zookeeper
+    state: started
+    enabled: yes

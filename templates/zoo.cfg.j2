@@ -1,0 +1,10 @@
+tickTime={{ zookeeper_tick_time }}
+dataDir={{ zookeeper_data_dir }}
+clientPort={{ zookeeper_port }}
+initLimit=5
+syncLimit=2
+{% if zookeeper_hosts is defined %}
+{% for host in zookeeper_hosts %}
+server.{{ loop.index }}={{ host }}:2888:3888
+{% endfor %}
+{% endif %}

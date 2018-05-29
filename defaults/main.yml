@@ -1,0 +1,12 @@
+---
+zookeeper_version: "3.4.9"
+zookeeper_user: zookeeper
+zookeeper_group: zookeeper
+zookeeper_name: zookeeper-{{ zookeeper_version }}
+zookeeper_install_dir: "/opt/{{ zookeeper_name }}"
+zookeeper_conf_dir: "{{ zookeeper_install_dir }}/conf"
+zookeeper_data_dir: /opt/zookeeper/data
+zookeeper_log_dir: /opt/zookeeper/log
+zookeeper_tick_time: 2000
+zookeeper_port: 2181
+zookeeper_url: "https://archive.apache.org/dist/zookeeper/{{ zookeeper_name }}/{{ zookeeper_name }}.tar.gz"

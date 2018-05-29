@@ -1,0 +1,1 @@
+{% for node in zookeeper_hosts %}{% if hostvars[node]['ansible_nodename'] == ansible_hostname %}{{loop.index}}{% endif %}{% endfor %}
