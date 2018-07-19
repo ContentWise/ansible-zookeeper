@@ -34,3 +34,7 @@ provisioner:
 
 suites:
   - name: default
+  - name: user_switch
+    provisioner:
+      playbook: test/integration/user_switch.yml
+      idempotency_test: false

@@ -1,6 +1,6 @@
 ---
-- name: restart kafka
+- name: restart zookeeper
   systemd:
-    name: kafka
+    name: zookeeper
     state: restarted
     daemon_reload: yes
